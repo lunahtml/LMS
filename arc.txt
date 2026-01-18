@@ -8,6 +8,10 @@ LMS-PLATFORM
 |       |__Student/
 |           |__Resources/
 |              |__StudentResources.php
+|              |__CourseResource.php
+|              |__CourseResource/
+|                 |__Pages/
+|                    |__ListCourses.php
 |              |__StudentResources/
 |                 |__Pages/
 |                    |__ListStudents.php
@@ -24,6 +28,7 @@ LMS-PLATFORM
 |                 |__RelationManager/
 |                    |__DocumentsRelationManager.php
 |                    |__UsersRelationManager.php
+|                    |__CoursesRelationManager.php
 |              |__CompanyResource.php
 |           |__Pages/
 |              |__Dashbord.php -ЛК для компаний
@@ -40,6 +45,7 @@ LMS-PLATFORM
 |              |__RelationManagers/
 |                 |__DocumentsRelationManager.php
 |                 |__UsersRelationManager.php
+|                 |__CoursesRelationManager.php
 |           |__Courses/
 |               |__Pages/
 |               |__Schemas/

@@ -74,6 +74,7 @@ class CompanyResource extends Resource
         return [
             RelationManagers\DocumentsRelationManager::class,
             RelationManagers\UsersRelationManager::class,
+            RelationManagers\CoursesRelationManager::class,
         ];
     }
 

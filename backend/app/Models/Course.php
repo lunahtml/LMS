@@ -54,4 +54,5 @@ class Course extends Model
             ->withPivot('order')
             ->withTimestamps();
     }
+
 }

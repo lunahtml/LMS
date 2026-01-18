@@ -72,6 +72,7 @@ class CompanyResource extends Resource
         return [
             \App\Filament\Resources\CompanyResource\RelationManagers\DocumentsRelationManager::class,
             \App\Filament\Resources\CompanyResource\RelationManagers\UsersRelationManager::class,
+            \App\Filament\Resources\CompanyResource\RelationManagers\CoursesRelationManager::class,
         ];
     }
 
