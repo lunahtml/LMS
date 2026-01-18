@@ -1,5 +1,5 @@
 <?php
-
+//backend/app/Filament/Resources/Companies/companyResource.php
 namespace App\Filament\Resources\Companies;
 
 use App\Filament\Resources\Companies\Pages\CreateCompany;
@@ -71,6 +71,7 @@ class CompanyResource extends Resource
     {
         return [
             \App\Filament\Resources\CompanyResource\RelationManagers\DocumentsRelationManager::class,
+            \App\Filament\Resources\CompanyResource\RelationManagers\UsersRelationManager::class,
         ];
     }
 

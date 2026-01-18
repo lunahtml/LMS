@@ -1,21 +1,20 @@
 <?php
-//backend/app/Filament/Resources/Users/UserResource.php
-namespace App\Filament\Resources\Users;
 
-use App\Filament\Resources\Users\Pages;
-use App\Models\User;
+//backend\app\Filament\Resources\CompanyResource\RelationManagers\UsersRelationManager.php
+namespace App\Filament\Resources\CompanyResource\RelationManagers;
+
 use Filament\Actions;
 use Filament\Forms;
 use Filament\Schemas\Schema;
-use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Filament\Resources\RelationManagers\RelationManager;
 
-class UserResource extends Resource
+class UsersRelationManager extends RelationManager
 {
-    protected static ?string $model = User::class;
+    protected static string $relationship = 'users';
 
-    public static function form(Schema $schema): Schema
+    public function form(Schema $schema): Schema
     {
         return $schema
             ->schema([
@@ -37,22 +36,23 @@ class UserResource extends Resource
                     ->multiple()
                     ->relationship('roles', 'name')
                     ->preload(),
-                    Forms\Components\Select::make('company_id')
+            ]);
+    }
+
+    public function table(Table $table): Table
+    {
+        return $table
+            ->recordTitleAttribute('name')
+            ->columns([
+                Tables\Columns\TextColumn::make('name')
+                    ->searchable(),
+                Tables\Columns\TextInput::make('company_id')
                     ->label('Company')
                     ->relationship('company', 'name')
                     ->visible(fn ($livewire): bool => 
                         $livewire instanceof Pages\CreateUser || 
                         $livewire instanceof Pages\EditUser
                     ),
-            ]);
-    }
-
-    public static function table(Table $table): Table
-    {
-        return $table
-            ->columns([
-                Tables\Columns\TextColumn::make('name')
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('email')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('roles.name')
@@ -66,6 +66,9 @@ class UserResource extends Resource
             ->filters([
                 //
             ])
+            ->headerActions([
+                Actions\CreateAction::make(),
+            ])
             ->actions([
                 Actions\EditAction::make(),
                 Actions\DeleteAction::make(),
@@ -75,21 +78,5 @@ class UserResource extends Resource
                     Actions\DeleteBulkAction::make(),
                 ]),
             ]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
-    }
-
-    public static function getPages(): array
-    {
-        return [
-            'index' => Pages\ListUsers::route('/'),
-            'create' => Pages\CreateUser::route('/create'),
-            'edit' => Pages\EditUser::route('/{record}/edit'),
-        ];
     }
 }

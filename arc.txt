@@ -13,10 +13,11 @@ LMS-PLATFORM
 |                    |__EditCompany.php
 |                 |__RelationManager/
 |                    |__DocumentsRelationManager.php
+|                    |__UsersRelationManager.php
 |              |__CompanyResource.php
 |           |__Pages/
 |              |__Dashbord.php -ЛК для компаний
-|       |__Resourses/
+|       |__Resources/
 |           |__Categories/
 |               |__Pages/
 |               |__Schemas/
@@ -28,6 +29,7 @@ LMS-PLATFORM
 |           |__CompanyResource/
 |              |__RelationManagers/
 |                 |__DocumentsRelationManager.php
+|                 |__UsersRelationManager.php
 |           |__Courses/
 |               |__Pages/
 |               |__Schemas/
@@ -113,8 +115,6 @@ $ docker exec lms_backend php artisan make:filament-user --no-interaction --name
 docker exec lms_backend php artisan make:model Category -m
 docker exec lms_backend php artisan migrate
 docker exec lms_backend php artisan make:filament-resource Category --generate
-
-готово работает. теперь нам надо, чтобы компания могла зайти в личный кабинет и увидеть там список своих студентов и админы также должны видеть список студентов у компании и учителей, позже, проваливаясь в студента могла видеть прогресс по урокам, домашкам и проверочным работам. потом  надо добавить функционал, чтобы и админы и  компании могли загружать документы - чеки и квитанции и выставленные счета.
 
 
 

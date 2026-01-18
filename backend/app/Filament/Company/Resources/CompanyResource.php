@@ -1,5 +1,5 @@
 <?php
-// backend/app/Filament/Company/Resources/CompanyResource.php
+//backend\app\Filament\Company\Resources\CompanyResource.php
 
 namespace App\Filament\Company\Resources;
 
@@ -73,6 +73,7 @@ class CompanyResource extends Resource
     {
         return [
             RelationManagers\DocumentsRelationManager::class,
+            RelationManagers\UsersRelationManager::class,
         ];
     }
 

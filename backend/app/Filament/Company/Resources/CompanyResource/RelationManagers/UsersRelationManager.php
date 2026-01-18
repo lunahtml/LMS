@@ -1,21 +1,21 @@
 <?php
-//backend/app/Filament/Resources/Users/UserResource.php
-namespace App\Filament\Resources\Users;
 
-use App\Filament\Resources\Users\Pages;
-use App\Models\User;
+//backend\app\Filament\Company\Resources\CompanyResource\RelationManagers\UsersRelationManager.php
+namespace App\Filament\Company\Resources\CompanyResource\RelationManagers;
+
 use Filament\Actions;
 use Filament\Forms;
 use Filament\Schemas\Schema;
-use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Filament\Resources\RelationManagers\RelationManager;
+use Illuminate\Database\Eloquent\Builder;
 
-class UserResource extends Resource
+class UsersRelationManager extends RelationManager
 {
-    protected static ?string $model = User::class;
+    protected static string $relationship = 'users';
 
-    public static function form(Schema $schema): Schema
+    public function form(Schema $schema): Schema
     {
         return $schema
             ->schema([
@@ -35,21 +35,22 @@ class UserResource extends Resource
                     ->revealable(),
                 Forms\Components\Select::make('roles')
                     ->multiple()
-                    ->relationship('roles', 'name')
-                    ->preload(),
-                    Forms\Components\Select::make('company_id')
-                    ->label('Company')
-                    ->relationship('company', 'name')
-                    ->visible(fn ($livewire): bool => 
-                        $livewire instanceof Pages\CreateUser || 
-                        $livewire instanceof Pages\EditUser
-                    ),
+                    ->relationship(
+                        name: 'roles', 
+                        titleAttribute: 'name',
+                        modifyQueryUsing: fn (Builder $query) => $query->where('name', 'student')
+                    )
+                    ->preload()
+                    ->default(function () {
+                        return \Spatie\Permission\Models\Role::where('name', 'student')->pluck('id');
+                    }),
             ]);
     }
 
-    public static function table(Table $table): Table
+    public function table(Table $table): Table
     {
         return $table
+            ->recordTitleAttribute('name')
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
@@ -66,6 +67,9 @@ class UserResource extends Resource
             ->filters([
                 //
             ])
+            ->headerActions([
+                Actions\CreateAction::make(),
+            ])
             ->actions([
                 Actions\EditAction::make(),
                 Actions\DeleteAction::make(),
@@ -75,21 +79,5 @@ class UserResource extends Resource
                     Actions\DeleteBulkAction::make(),
                 ]),
             ]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
-    }
-
-    public static function getPages(): array
-    {
-        return [
-            'index' => Pages\ListUsers::route('/'),
-            'create' => Pages\CreateUser::route('/create'),
-            'edit' => Pages\EditUser::route('/{record}/edit'),
-        ];
     }
 }
