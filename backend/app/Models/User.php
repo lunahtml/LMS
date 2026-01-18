@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Authenticatable
 {
@@ -49,7 +50,20 @@ class User extends Authenticatable
     }
 
     public function company(): BelongsTo
-{
-    return $this->belongsTo(Company::class);
-}
+    {
+        return $this->belongsTo(Company::class);
+    }
+
+    // Добавь эти методы:
+    public function courses(): BelongsToMany
+    {
+        return $this->belongsToMany(Course::class, 'course_student', 'student_id', 'course_id')
+            ->withPivot('enrolled_at', 'completed_at')
+            ->withTimestamps();
+    }
+
+    public function teachingCourses(): HasMany
+    {
+        return $this->hasMany(Course::class, 'teacher_id');
+    }
 }

@@ -5,6 +5,16 @@ LMS-PLATFORM
 |__backend/
 |  |__app/
 |    |__Filament/
+|       |__Student/
+|           |__Resources/
+|              |__StudentResources.php
+|              |__StudentResources/
+|                 |__Pages/
+|                    |__ListStudents.php
+|                    |__EditStudent.php
+|           |__Pages/
+|              |__Dashboard.php
+|           |__Widgets/
 |       |__Company/
 |           |__Resources/
 |              |__CompanyResource/
@@ -70,6 +80,7 @@ LMS-PLATFORM
 |       |__Filament
 |           |__AdminPanelProvider.php
 |           |__CompanyPanelProvider.php админка для компаний где они могут подгружать
+|           |__StudentPanelProvider.php админка для Student to see courses
 |  |__bootstrap/
 |  |__config/
 |  |__database/
