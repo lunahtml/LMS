@@ -35,4 +35,8 @@ class Company extends Model
             $query->where('name', 'student');
         });
     }
+        public function documents()
+    {
+        return $this->hasMany(Document::class);
+    }
 }

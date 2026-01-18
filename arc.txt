@@ -5,6 +5,17 @@ LMS-PLATFORM
 |__backend/
 |  |__app/
 |    |__Filament/
+|       |__Company/
+|           |__Resources/
+|              |__CompanyResource/
+|                 |__Pages/
+|                    |__ListCompanies.php
+|                    |__EditCompany.php
+|                 |__RelationManager/
+|                    |__DocumentsRelationManager.php
+|              |__CompanyResource.php
+|           |__Pages/
+|              |__Dashbord.php -ЛК для компаний
 |       |__Resourses/
 |           |__Categories/
 |               |__Pages/
@@ -12,9 +23,12 @@ LMS-PLATFORM
 |               |__Tables/
 |               CategoryResource.php
 |           |__CourseResource/
-|              |__RelationManager/
-|                 |__LessonRelationManager.php
-|           |__Course/
+|              |__RelationManagers/
+|                 |__LessonsRelationManager.php
+|           |__CompanyResource/
+|              |__RelationManagers/
+|                 |__DocumentsRelationManager.php
+|           |__Courses/
 |               |__Pages/
 |               |__Schemas/
 |               |__Tables/
@@ -34,17 +48,26 @@ LMS-PLATFORM
 |               |__Schemas/
 |               |__Tables/
 |               CompanyResource.php
+|           |__Documents/
+|               |__Pages/
+|               |__Schemas/
+|               |__Tables/
+|               DocumentResource.php
 |    |__Http/
 |      |__Controllers/
 |         |__Controller.php
 |    |__Models/
 |       |__User.php - пользователи студенты учителя компании
 |       |__Company.php - компании, у который есть студенты назначенные им
+|       |__Document.php - для загрузки документов для компаний
 |       |__Category.php - категория курсов
 |       |__Course.php - курс
 |       |__Lesson.php - урок - один урок может быть назначен разным курсам
 |    |__Providers/
 |       |__AppServiceProvider.php
+|       |__Filament
+|           |__AdminPanelProvider.php
+|           |__CompanyPanelProvider.php админка для компаний где они могут подгружать
 |  |__bootstrap/
 |  |__config/
 |  |__database/
@@ -91,4 +114,32 @@ docker exec lms_backend php artisan make:model Category -m
 docker exec lms_backend php artisan migrate
 docker exec lms_backend php artisan make:filament-resource Category --generate
 
-готово работает. теперь нам надо, чтобы компания могла зайти в личный кабинет и увидеть там список своих студентов и админы также должны видеть список студентов у компании и учителей, позже, проваливаясь в студента могла видеть прогресс по урокам, домашкам и проверочным работам. потом  надо добавить функционал, чтобы и админы и  компании могли загружать документы - чеки и квитанции и выставленные счета. И еще нам надо чтобы учителя и админы могли создавать курсы. в каждом курсе они могут добавлять уроки, домашки и квизы, сколько посчитают нужным. один урок/домашка/квиз может быть назначен нескольким разным курсам. курсы делятся на категории. доступ к курсам открывает админ разным компаниям и назначенным им студентам.
+готово работает. теперь нам надо, чтобы компания могла зайти в личный кабинет и увидеть там список своих студентов и админы также должны видеть список студентов у компании и учителей, позже, проваливаясь в студента могла видеть прогресс по урокам, домашкам и проверочным работам. потом  надо добавить функционал, чтобы и админы и  компании могли загружать документы - чеки и квитанции и выставленные счета.
+
+
+
+Filament — используется для административной панели (админы, управление всем).
+
+Личные кабинеты для компаний, студентов, учителей — можно сделать двумя путями:
+
+Вариант A: Отдельный фронтенд (React/Vue) с API от Laravel.
+
+Вариант B: Использовать Filament с разными панелями (panels) для каждой роли.
+
+Рекомендую вариант B (Filament panels), потому что:
+
+Быстро, не нужно писать фронтенд с нуля
+
+Уже есть UI, безопасность, CRUD
+
+Можно кастомизировать под каждую роль
+
+Структура панелей Filament:
+
+Admin panel (уже есть) — полный доступ
+
+Company panel — только свои студенты, курсы, документы
+
+Teacher panel — только свои курсы, уроки, проверка домашек
+
+Student panel — только свои курсы, прогресс

@@ -1,10 +1,10 @@
 <?php
+// backend/app/Filament/Company/Resources/CompanyResource.php
 
-namespace App\Filament\Resources\Companies;
+namespace App\Filament\Company\Resources;
 
-use App\Filament\Resources\Companies\Pages\CreateCompany;
-use App\Filament\Resources\Companies\Pages\EditCompany;
-use App\Filament\Resources\Companies\Pages\ListCompanies;
+use App\Filament\Company\Resources\CompanyResource\Pages;
+use App\Filament\Company\Resources\CompanyResource\RelationManagers;
 use App\Models\Company;
 use Filament\Actions;
 use Filament\Forms;
@@ -12,10 +12,21 @@ use Filament\Schemas\Schema;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class CompanyResource extends Resource
 {
     protected static ?string $model = Company::class;
+
+    protected static ?string $navigationLabel = 'My Company';
+
+    protected static ?int $navigationSort = 1;
+
+    public static function getEloquentQuery(): Builder
+    {
+        // Показываем только компанию текущего пользователя
+        return parent::getEloquentQuery()->where('id', auth()->user()->company_id);
+    }
 
     public static function form(Schema $schema): Schema
     {
@@ -48,38 +59,28 @@ class CompanyResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('phone')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Actions\EditAction::make(),
-                Actions\DeleteAction::make(),
             ])
-            ->bulkActions([
-                Actions\BulkActionGroup::make([
-                    Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
+            ->bulkActions([]);
     }
 
     public static function getRelations(): array
     {
         return [
-            \App\Filament\Resources\CompanyResource\RelationManagers\DocumentsRelationManager::class,
+            RelationManagers\DocumentsRelationManager::class,
         ];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => ListCompanies::route('/'),
-            'create' => CreateCompany::route('/create'),
-            'edit' => EditCompany::route('/{record}/edit'),
+            'index' => Pages\ListCompanies::route('/'),
+            'edit' => Pages\EditCompany::route('/{record}/edit'),
         ];
     }
 }
