@@ -1,0 +1,94 @@
+LMS-PLATFORM
+|__nginx/
+|    |__nginx.conf
+|    |__Dockerfile
+|__backend/
+|  |__app/
+|    |__Filament/
+|       |__Resourses/
+|           |__Categories/
+|               |__Pages/
+|               |__Schemas/
+|               |__Tables/
+|               CategoryResource.php
+|           |__CourseResource/
+|              |__RelationManager/
+|                 |__LessonRelationManager.php
+|           |__Course/
+|               |__Pages/
+|               |__Schemas/
+|               |__Tables/
+|               CourseResource.php
+|           |__Lessons/
+|               |__Pages/
+|               |__Schemas/
+|               |__Tables/
+|               LessonResource.php
+|           |__Users/
+|               |__Pages/
+|               |__Schemas/
+|               |__Tables/
+|               UserResource.php
+|           |__Companies/
+|               |__Pages/
+|               |__Schemas/
+|               |__Tables/
+|               CompanyResource.php
+|    |__Http/
+|      |__Controllers/
+|         |__Controller.php
+|    |__Models/
+|       |__User.php - пользователи студенты учителя компании
+|       |__Company.php - компании, у который есть студенты назначенные им
+|       |__Category.php - категория курсов
+|       |__Course.php - курс
+|       |__Lesson.php - урок - один урок может быть назначен разным курсам
+|    |__Providers/
+|       |__AppServiceProvider.php
+|  |__bootstrap/
+|  |__config/
+|  |__database/
+|  |__public/
+|  |__resourses/
+|  |__routes/
+|  |__storage/
+|  |__tests/
+|  |__vendor/
+|  |__.editconfig
+|  |__.env
+|  |__.env.example
+|  |__.gitattributes
+|  |__.gitignore
+|  |__artisan
+|  |__composer.json
+|  |__composer.lock
+|  |__package.json
+|  |__phpunit.xml
+|  |__vite.config.js
+|  |__readme.md
+|  |__Dockerfile
+|__docker-compose.yml
+
+
+System: PostgreSQL
+
+Server: postgres
+
+Username: lms_user
+
+Password: lms_password
+
+Database: lms_db
+
+
+
+mitry@DESKTOP-1B9G79T MINGW64 ~/Desktop/www/lms-platform
+$ docker exec lms_backend php artisan make:filament-user --no-interaction --name=Admin --email=admin@lms.test --password=password123
+
+   INFO  Success! admin@lms.test may now log in at http://localhost:8000/admin/login.
+
+docker exec lms_backend php artisan make:model Category -m
+docker exec lms_backend php artisan migrate
+docker exec lms_backend php artisan make:filament-resource Category --generate
+
+готово работает. теперь нам надо, чтобы компания могла зайти в личный кабинет и увидеть там список своих студентов и админы также должны видеть список студентов у компании и учителей, позже, проваливаясь в студента могла видеть прогресс по урокам, домашкам и проверочным работам. потом  надо добавить функционал, чтобы и админы и  компании могли загружать документы - чеки и квитанции и выставленные счета. И еще нам надо чтобы учителя и админы могли создавать курсы. в каждом курсе они могут добавлять уроки, домашки и квизы, сколько посчитают нужным. один урок/домашка/квиз может быть назначен нескольким разным курсам. курсы делятся на категории. доступ к курсам открывает админ разным компаниям и назначенным им студентам.

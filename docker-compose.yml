@@ -1,0 +1,71 @@
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: lms_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: lms_db
+      POSTGRES_USER: lms_user
+      POSTGRES_PASSWORD: lms_password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - lms_network
+  adminer:
+    image: adminer:latest
+    container_name: lms_adminer
+    restart: unless-stopped
+    depends_on:
+      - postgres
+    ports:
+      - "8080:8080"
+    networks:
+      - lms_network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: lms_backend
+    restart: unless-stopped
+    depends_on:
+      - postgres
+    volumes:
+      - ./backend:/var/www/html
+    environment:
+      DB_CONNECTION: pgsql
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_DATABASE: lms_db
+      DB_USERNAME: lms_user
+      DB_PASSWORD: lms_password
+    expose:
+      - "9000"
+    command: php-fpm -F
+    networks:
+      - lms_network
+
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    container_name: lms_nginx
+    restart: unless-stopped
+    depends_on:
+      - backend
+    volumes:
+      - ./backend:/var/www/html
+    ports:
+      - "8000:80"
+    networks:
+      - lms_network
+
+volumes:
+  postgres_data:
+
+
+networks:
+  lms_network:
+    driver: bridge
