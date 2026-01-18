@@ -30,7 +30,7 @@ class CourseResource extends Resource
             ->whereHas('students', function ($query) {
                 $query->where('student_id', auth()->id());
             })
-            ->orWhereHas('company', function ($query) {
+            ->orWhereHas('companies', function ($query) {
                 $query->where('company_id', auth()->user()->company_id);
             });
     }
@@ -57,7 +57,7 @@ class CourseResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
+                // ViewAction не существует в Filament 1.x
             ])
             ->bulkActions([]);
     }
