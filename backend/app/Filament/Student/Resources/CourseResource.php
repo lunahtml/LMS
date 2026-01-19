@@ -68,8 +68,6 @@ class CourseResource extends Resource
     {
         return [
             'index' => Pages\ListCourses::route('/'),
-            // Удалили строку 'view' так как теперь используем обычный маршрут
-            // 'view' => Pages\ViewCourse::route('/{record}'),
         ];
     }
 }

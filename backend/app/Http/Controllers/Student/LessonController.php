@@ -27,7 +27,10 @@ class LessonController extends Controller
         if (!$hasAccess || !$course->lessons()->where('lesson_id', $lesson->id)->exists()) {
             abort(403, 'You do not have access to this lesson');
         }
-
+        if (!$student->courses()->where('course_id', $course->id)->exists()) {
+            // Автоматически зачисляем студента на курс
+            $student->courses()->attach($course->id, ['enrolled_at' => now()]);
+        }
         // Создаем или обновляем прогресс
         $progress = LessonProgress::firstOrCreate(
             [

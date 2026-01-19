@@ -29,6 +29,7 @@ LMS-PLATFORM
 |                    |__DocumentsRelationManager.php
 |                    |__UsersRelationManager.php
 |                    |__CoursesRelationManager.php
+|                    |__StudentProgressRelationManager.php
 |              |__CompanyResource.php
 |           |__Pages/
 |              |__Dashbord.php -ЛК для компаний
@@ -46,6 +47,10 @@ LMS-PLATFORM
 |                 |__DocumentsRelationManager.php
 |                 |__UsersRelationManager.php
 |                 |__CoursesRelationManager.php
+|                 |__StudentProgressRelationManager.php
+|           |__UserResource/
+|              |__RelationManagers/
+|                 |__CourseProgressRelationManager.php
 |           |__Courses/
 |               |__Pages/
 |               |__Schemas/
@@ -77,6 +82,8 @@ LMS-PLATFORM
 |         |__Student/
 |           |__CourseController.php
 |           |__LessonController.php
+|         |__Company/
+|           |__StudentProgressController.php
 |    |__Models/
 |       |__User.php - пользователи студенты учителя компании
 |       |__Company.php - компании, у который есть студенты назначенные им
@@ -124,53 +131,3 @@ LMS-PLATFORM
 |  |__readme.md
 |  |__Dockerfile
 |__docker-compose.yml
-
-
-System: PostgreSQL
-
-Server: postgres
-
-Username: lms_user
-
-Password: lms_password
-
-Database: lms_db
-
-
-
-mitry@DESKTOP-1B9G79T MINGW64 ~/Desktop/www/lms-platform
-$ docker exec lms_backend php artisan make:filament-user --no-interaction --name=Admin --email=admin@lms.test --password=password123
-
-   INFO  Success! admin@lms.test may now log in at http://localhost:8000/admin/login.
-
-docker exec lms_backend php artisan make:model Category -m
-docker exec lms_backend php artisan migrate
-docker exec lms_backend php artisan make:filament-resource Category --generate
-
-
-
-Filament — используется для административной панели (админы, управление всем).
-
-Личные кабинеты для компаний, студентов, учителей — можно сделать двумя путями:
-
-Вариант A: Отдельный фронтенд (React/Vue) с API от Laravel.
-
-Вариант B: Использовать Filament с разными панелями (panels) для каждой роли.
-
-Рекомендую вариант B (Filament panels), потому что:
-
-Быстро, не нужно писать фронтенд с нуля
-
-Уже есть UI, безопасность, CRUD
-
-Можно кастомизировать под каждую роль
-
-Структура панелей Filament:
-
-Admin panel (уже есть) — полный доступ
-
-Company panel — только свои студенты, курсы, документы
-
-Teacher panel — только свои курсы, уроки, проверка домашек
-
-Student panel — только свои курсы, прогресс

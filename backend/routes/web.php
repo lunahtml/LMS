@@ -18,3 +18,9 @@ Route::middleware(['auth'])->prefix('student')->name('student.')->group(function
     Route::post('/courses/{course}/lessons/{lesson}/complete', [\App\Http\Controllers\Student\LessonController::class, 'complete'])
         ->name('lessons.complete');
 });
+
+// Для компаний
+Route::middleware(['auth', 'role:company'])->prefix('company')->name('company.')->group(function () {
+    Route::get('/students/{student}/progress', [\App\Http\Controllers\Company\StudentProgressController::class, 'show'])
+        ->name('student.progress');
+});

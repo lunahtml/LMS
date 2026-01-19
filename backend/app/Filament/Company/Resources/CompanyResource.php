@@ -75,6 +75,7 @@ class CompanyResource extends Resource
             RelationManagers\DocumentsRelationManager::class,
             RelationManagers\UsersRelationManager::class,
             RelationManagers\CoursesRelationManager::class,
+            RelationManagers\StudentProgressRelationManager::class,
         ];
     }
 
