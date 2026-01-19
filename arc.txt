@@ -74,6 +74,9 @@ LMS-PLATFORM
 |    |__Http/
 |      |__Controllers/
 |         |__Controller.php
+|         |__Student/
+|           |__CourseController.php
+|           |__LessonController.php
 |    |__Models/
 |       |__User.php - пользователи студенты учителя компании
 |       |__Company.php - компании, у который есть студенты назначенные им
@@ -81,6 +84,7 @@ LMS-PLATFORM
 |       |__Category.php - категория курсов
 |       |__Course.php - курс
 |       |__Lesson.php - урок - один урок может быть назначен разным курсам
+|       |__LessonProgress.php
 |    |__Providers/
 |       |__AppServiceProvider.php
 |       |__Filament
@@ -92,6 +96,16 @@ LMS-PLATFORM
 |  |__database/
 |  |__public/
 |  |__resourses/
+|     |__views/
+|        |__student/
+|           |__course-show.blade.php
+|           |__lesson-show.blade.php
+|        |__filament/
+|           |__student/
+|              |__resources/
+|                 |__course-resource/
+|                    |__pages/
+|                       |__view-course.blade.php
 |  |__routes/
 |  |__storage/
 |  |__tests/

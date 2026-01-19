@@ -57,7 +57,9 @@ class CourseResource extends Resource
                 //
             ])
             ->actions([
-                // ViewAction не существует в Filament 1.x
+                \Filament\Actions\Action::make('view')
+                    ->label('View Course')
+                    ->url(fn (Course $record): string => route('student.courses.show', ['course' => $record])),
             ])
             ->bulkActions([]);
     }
@@ -66,6 +68,8 @@ class CourseResource extends Resource
     {
         return [
             'index' => Pages\ListCourses::route('/'),
+            // Удалили строку 'view' так как теперь используем обычный маршрут
+            // 'view' => Pages\ViewCourse::route('/{record}'),
         ];
     }
 }
