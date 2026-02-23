@@ -1,4 +1,5 @@
 LMS-PLATFORM
+|__test-login.html
 |__nginx/
 |    |__nginx.conf
 |    |__Dockerfile
@@ -80,6 +81,9 @@ LMS-PLATFORM
 |      |__Middleware/
 |           |__CheckUserRole.php
 |      |__Controllers/
+|         |__Api/
+|           |__CourseController.php
+|           |__AuthController.php
 |         |__Controller.php
 |         |__Student/
 |           |__CourseController.php
@@ -116,6 +120,9 @@ LMS-PLATFORM
 |                    |__pages/
 |                       |__view-course.blade.php
 |  |__routes/
+|       |__api.php
+|       |__console.php
+|       |__web.php
 |  |__storage/
 |  |__tests/
 |  |__vendor/
@@ -134,4 +141,9 @@ LMS-PLATFORM
 |  |__Dockerfile
 |__docker-compose.yml
 
-не работает прогресс стуждента в дашбордах компании и админ не видит прогресс в юзерах. И  большая брешь в безопасности, если перейти на /admin и например зайти под паролем компании, то попадаешь в админский кабинет а так не должно быть. у нас юзеры сторонние попадают на свои кабинеты через /student   / company
+Здравствуйте, благодарю за интерес. В проекте реализован веб-интерфейс с дашбордами на Filament, всё работает в Docker. Для развертывания можно выполнить docker-compose up --build -d. API не был предусмотрен, так как вся логика реализована через админ-панели, но я базово добавила //backend/routes/api.php  //backend/app/Http/Controllers/Api/CourseController.php. Проект сыроват, но я его делала для себя ради интереса/обучения. Админ может публиковать курсы и назначать им уроки, раздавать доступы компаниям, обмениваться с ними файлами. Компании могут привлекать своих учеников.  Сегодня пофиксила баги с доступами и перезалила. в файле //backend/database/seeders/RoleSeeder.php   можно найти тестовые доступы для ролей. логины по адресам для разных ролей 
+http://localhost:8000/admin      
+http://localhost:8000/student        
+http://localhost:8000/company
+
+to do: не работает прогресс студента в дашбордах компании и админ не видит прогресс в юзерах.
