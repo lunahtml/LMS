@@ -54,4 +54,32 @@ class CourseController extends Controller
             'score' => $progress?->score,
         ];
     }
+
+
+    public function complete(Course $course)
+{
+    $student = Auth::user();
+    
+    if (!$student->hasRole('student')) {
+        abort(403);
+    }
+
+    // Проверяем, что все уроки завершены
+    $totalLessons = $course->lessons()->count();
+    $completedLessons = $student->completedLessons()
+        ->where('course_id', $course->id)
+        ->count();
+    
+    if ($totalLessons === 0 || $completedLessons < $totalLessons) {
+        return redirect()->back()->with('error', 'Complete all lessons first');
+    }
+
+    // Отмечаем курс как завершенный
+    $student->courses()->updateExistingPivot($course->id, [
+        'completed_at' => now()
+    ]);
+
+    return redirect()->route('student.courses.show', $course)
+        ->with('success', 'Course completed successfully!');
+}
 }

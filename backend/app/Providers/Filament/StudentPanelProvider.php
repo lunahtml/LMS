@@ -52,6 +52,7 @@ class StudentPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
+                'check.role:student',
             ])
             ->authGuard('web')
             ->profile()

@@ -53,6 +53,7 @@ class CompanyPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
+                'check.role:company',
             ])
             ->authGuard('web')
             ->registration()

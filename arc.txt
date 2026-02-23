@@ -77,6 +77,8 @@ LMS-PLATFORM
 |               |__Tables/
 |               DocumentResource.php
 |    |__Http/
+|      |__Middleware/
+|           |__CheckUserRole.php
 |      |__Controllers/
 |         |__Controller.php
 |         |__Student/
@@ -131,3 +133,5 @@ LMS-PLATFORM
 |  |__readme.md
 |  |__Dockerfile
 |__docker-compose.yml
+
+не работает прогресс стуждента в дашбордах компании и админ не видит прогресс в юзерах. И  большая брешь в безопасности, если перейти на /admin и например зайти под паролем компании, то попадаешь в админский кабинет а так не должно быть. у нас юзеры сторонние попадают на свои кабинеты через /student   / company

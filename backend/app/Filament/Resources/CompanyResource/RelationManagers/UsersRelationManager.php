@@ -46,12 +46,12 @@ class UsersRelationManager extends RelationManager
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
-                Tables\Columns\TextInput::make('company_id')
+                Tables\Columns\TextColumn::make('company.name')
                     ->label('Company')
-                    ->relationship('company', 'name')
+                    ->searchable()
                     ->visible(fn ($livewire): bool => 
-                        $livewire instanceof Pages\CreateUser || 
-                        $livewire instanceof Pages\EditUser
+                        $livewire instanceof \App\Filament\Resources\UserResource\Pages\CreateUser || 
+                        $livewire instanceof \App\Filament\Resources\UserResource\Pages\EditUser
                     ),
                 Tables\Columns\TextColumn::make('email')
                     ->searchable(),

@@ -104,6 +104,46 @@
                                 <p class="text-gray-500">No lessons available for this course yet.</p>
                             </div>
                         @endforelse
+
+
+<!-- После списка уроков добавь: -->
+<div class="mt-8 pt-6 border-t">
+    @php
+        $student = Auth::user();
+        $totalLessons = $course->lessons()->count();
+        $completedLessons = $student->completedLessons()
+            ->where('course_id', $course->id)
+            ->count();
+        $isCourseCompleted = $student->courses()
+            ->where('course_id', $course->id)
+            ->whereNotNull('completed_at')
+            ->exists();
+    @endphp
+    
+    <div class="flex justify-between items-center">
+        <div>
+            <h4 class="text-lg font-semibold text-gray-900">Course Progress</h4>
+            <p class="text-gray-600">{{ $completedLessons }} of {{ $totalLessons }} lessons completed</p>
+        </div>
+        
+        @if($totalLessons > 0 && $completedLessons === $totalLessons && !$isCourseCompleted)
+            <form action="{{ route('student.courses.complete', $course) }}" method="POST">
+                @csrf
+                <button type="submit" 
+                        class="px-6 py-3 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700">
+                    Complete Course
+                </button>
+            </form>
+        @elseif($isCourseCompleted)
+            <div class="px-4 py-2 bg-green-100 text-green-800 rounded-lg">
+                Course completed on {{ $student->courses()
+                    ->where('course_id', $course->id)
+                    ->first()->pivot->completed_at->format('M d, Y') }}
+            </div>
+        @endif
+    </div>
+</div>
+
                     </div>
                 </div>
             </div>

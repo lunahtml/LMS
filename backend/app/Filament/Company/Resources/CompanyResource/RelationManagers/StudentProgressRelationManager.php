@@ -19,15 +19,33 @@ class StudentProgressRelationManager extends RelationManager
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('courses_count')
-                    ->label('Total Courses')
+                Tables\Columns\TextColumn::make('enrolled_courses')
+                    ->label('Enrolled Courses')
                     ->getStateUsing(function ($record) {
                         return $record->courses()->count();
                     }),
-                Tables\Columns\TextColumn::make('completed_lessons_count')
-                    ->label('Completed Lessons')
+                Tables\Columns\TextColumn::make('completed_courses')
+                    ->label('Completed Courses')
                     ->getStateUsing(function ($record) {
-                        return $record->completedLessons()->count();
+                        return $record->courses()
+                            ->whereNotNull('completed_at')
+                            ->count();
+                    }),
+                Tables\Columns\TextColumn::make('total_progress')
+                    ->label('Overall Progress')
+                    ->getStateUsing(function ($record) {
+                        $totalLessons = 0;
+                        $completedLessons = 0;
+                        
+                        foreach ($record->courses as $course) {
+                            $totalLessons += $course->lessons()->count();
+                            $completedLessons += $record->completedLessons()
+                                ->where('course_id', $course->id)
+                                ->count();
+                        }
+                        
+                        if ($totalLessons === 0) return '0%';
+                        return (int)(($completedLessons / $totalLessons) * 100) . '%';
                     }),
             ])
             ->filters([
@@ -35,9 +53,9 @@ class StudentProgressRelationManager extends RelationManager
             ])
             ->headerActions([])
             ->actions([
-                \Filament\Actions\Action::make('view')
+                \Filament\Actions\Action::make('view_details')
                     ->label('View Details')
-                    ->url('#'),
+                    ->url(fn ($record): string => '#'),
             ])
             ->bulkActions([]);
     }
